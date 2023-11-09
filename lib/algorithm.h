@@ -10,9 +10,9 @@ class Algorithm {
 
   public:
     virtual void fit(std::vector<std::vector<float>> data,
-                     std::vector<std::vector<int>> labels) = 0;
+                     std::vector<std::vector<int>> labels = {}) = 0;
     virtual void fit(std::vector<std::vector<int>> data,
-                     std::vector<std::vector<int>> labels) = 0;
+                     std::vector<std::vector<int>> labels = {}) = 0;
 
     virtual void predict(std::vector<std::vector<float>> data) = 0;
     virtual void predict(std::vector<std::vector<int>> data) = 0;
