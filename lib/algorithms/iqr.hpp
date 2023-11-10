@@ -1,5 +1,6 @@
 #include "../algorithm.h"
 #include <tuple>
+#include <stdexcept>
 
 class IQR : public Algorithm {
     private:
@@ -30,6 +31,22 @@ class IQR : public Algorithm {
         }
 
         template <typename T>
+        void lable_data(const std::vector<T>& data, std::vector<int>& labels){
+            int num_features = _quartiles.size();
+            
+            for(auto const& sample : data){
+                labels.push_back(0);
+                for(int i = 0; i < num_features; i++){
+                    const auto[lower, upper] = _quartiles[i];
+                    if(sample[i] > upper + 1.5f * (upper - lower) || sample[i] < lower - 1.5f * (upper - lower)){
+                        labels.back() = 1;
+                        break;
+                    }
+                }
+            }
+        }
+
+        template <typename T>
         void fitAny(std::vector<std::vector<T>> data,
                     std::vector<std::vector<int>> labels) {
 
@@ -43,21 +60,17 @@ class IQR : public Algorithm {
                 _quartiles.push_back(std::make_tuple(calcQuartile(feature_vec, Quartile::FIRST), calcQuartile(feature_vec, Quartile::THIRD)));
             }
 
-            for(auto const& sample : data){
-                _labels.push_back(0);
-                for(int i = 0; i < num_features; i++){
-                    const auto[lower, upper] = _quartiles[i];
-                    if(sample[i] > upper + 1.5f * (upper - lower) || sample[i] < lower - 1.5f * (upper - lower)){
-                        _labels.back() = 1;
-                        break;
-                    }
-                }
-            }
+            lable_data(data, _labels);
         };
 
         template <typename T>
-        void predictAny(T data) {
-
+        std::vector<int> predictAny(T data) {
+            if(std::any_of(data.begin(), data.end(), [this](auto const& sample) { return sample.size() != _quartiles.size(); })) {
+                throw std::invalid_argument("Passed data has different number of features than the model was trained on.");
+            }
+            std::vector<int> labels = {};
+            lable_data(data, labels);
+            return labels;
         };
 
     public:
@@ -70,10 +83,10 @@ class IQR : public Algorithm {
                     fitAny(data, labels);
                 };
     
-        void predict(std::vector<std::vector<float>> data) override {
-            predictAny(data);
+        std::vector<int> predict(std::vector<std::vector<float>> data) override {
+            return predictAny(data);
         };
-        void predict(std::vector<std::vector<int>> data) override {
-            predictAny(data);
+        std::vector<int> predict(std::vector<std::vector<int>> data) override {
+            return predictAny(data);
         };
 };
