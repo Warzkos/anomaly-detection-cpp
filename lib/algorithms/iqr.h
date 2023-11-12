@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../algorithm.h"
+#include "../utils/quartile_calculator.h"
 #include <tuple>
 #include <stdexcept>
 #include <algorithm>

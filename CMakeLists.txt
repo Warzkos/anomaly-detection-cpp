@@ -16,7 +16,17 @@ include(CTest)
 # Add subdirectories with code
 add_subdirectory(external/googletest)
 
-add_executable(main src/main.cpp src/algorithms/iqr.cpp lib/algorithms/iqr.h lib/algorithm.h)
+set(HEADER_FILES
+lib/utils/quartile_calculator.h
+lib/algorithm.h
+lib/algorithms/iqr.h
+)
+
+set(SOURCE_FILES
+src/utils/quartile_calculator.cpp
+src/algorithms/iqr.cpp
+)
+add_executable(main src/main.cpp  ${SOURCE_FILES} ${HEADER_FILES})
 
 # BUILD_TESTING variable is created by include(CTest)
 # It is set to ON by default
