@@ -1,3 +1,5 @@
+#pragma once
+
 #include "../distance.h"
 
 class Manhattan : public Distance {
