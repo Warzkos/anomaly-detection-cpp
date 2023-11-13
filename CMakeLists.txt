@@ -41,7 +41,9 @@ add_executable(main src/main.cpp  ${SOURCE_FILES} ${HEADER_FILES})
 # BUILD_TESTING variable is created by include(CTest)
 # It is set to ON by default
 if(BUILD_TESTING)
-  add_executable(tests tests/tests_main.cpp tests/distance_test.cpp ${SOURCE_FILES} ${HEADER_FILES})
+  set(TESTS tests/tests_main.cpp tests/distance_test.cpp tests/quartile_calc_test.cpp)
+
+  add_executable(tests ${TESTS} ${SOURCE_FILES} ${HEADER_FILES})
   target_link_libraries(tests PRIVATE GTest::gtest_main)
 
   include(GoogleTest)
