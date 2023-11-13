@@ -14,9 +14,9 @@ double Minkowski::calculateDistanceAny(const std::vector<T>& p1, const std::vect
     
     double distance = 0;
     for (int i = 0; i < p1.size(); i++) {
-        distance += pow(static_cast<double>(p1[i]) - static_cast<double>(p2[i]), 2.0d);
+        distance += std::pow(std::abs(static_cast<double>(p1[i]) - static_cast<double>(p2[i])), _order);
     }
-    return sqrt(distance);
+    return std::pow(distance, 1.0 / _order);
 }
 
 double Minkowski::calculateDistance(const std::vector<double>& p1, const std::vector<double>& p2) {
