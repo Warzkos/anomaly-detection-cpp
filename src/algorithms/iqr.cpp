@@ -23,15 +23,10 @@ void IQR::fitAny(std::vector<std::vector<T>> data,
                  std::vector<std::vector<int>> labels) {
     int num_features = data[0].size();
 
-    for (int i = 0; i < num_features; i++) {
-        std::vector<T> feature_vec;
-        std::transform(data.begin(), data.end(),
-                       std::back_inserter(feature_vec),
-                       [i](auto const &sample) { return sample[i]; });
-
+    for (int feature = 0; feature < num_features; feature++) {
         _quartiles.push_back(
-            std::make_tuple(QuartileCalculator::calcQuartile(feature_vec, QuartileCalculator::Quartile::FIRST),
-                            QuartileCalculator::calcQuartile(feature_vec, QuartileCalculator::Quartile::THIRD)));
+            std::make_tuple(QuartileCalculator::calcQuartile(data, feature, QuartileCalculator::Quartile::FIRST),
+                            QuartileCalculator::calcQuartile(data, feature, QuartileCalculator::Quartile::THIRD)));
     }
 
     lable_data(data, _labels, _quartiles);
