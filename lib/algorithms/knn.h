@@ -1,9 +1,14 @@
 #pragma once
 
+#include <memory>
+
 #include "../algorithm.h"
+#include "../utils/search_algorithm.h"
+#include "../utils/distance.h"
 
 class KNN : public Algorithm {
     public:
+        KNN(std::shared_ptr<SearchAlgorithm> searchAlgorithm, std::shared_ptr<Distance> distance);
 
         void fit(std::vector<std::vector<double>> data,
                     std::vector<std::vector<int>> labels = {}) override;
