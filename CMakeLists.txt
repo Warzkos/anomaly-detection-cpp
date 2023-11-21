@@ -19,21 +19,32 @@ add_subdirectory(external/googletest)
 set(HEADER_FILES
 lib/utils/quartile_calculator.h
 lib/algorithms/iqr.h
+lib/algorithms/knn.h
 lib/algorithm.h
+
 lib/utils/distances/euclidean.h
 lib/utils/distances/minkowski.h
 lib/utils/distances/chebyshev.h
 lib/utils/distances/manhattan.h
 lib/utils/distance.h
+
+lib/utils/search_algorithm/bruteforce.h
+lib/utils/search_algorithm/kdtree.h
+lib/utils/search_algorithm.h
 )
 
 set(SOURCE_FILES
 src/utils/quartile_calculator.cpp
 src/algorithms/iqr.cpp
+src/algorithms/knn.cpp
+
 src/utils/distances/euclidean.cpp
 src/utils/distances/minkowski.cpp
 src/utils/distances/chebyshev.cpp
 src/utils/distances/manhattan.cpp
+
+src/utils/search_algorithm/bruteforce.cpp
+src/utils/search_algorithm/kdtree.cpp
 )
 
 add_executable(main src/main.cpp  ${SOURCE_FILES} ${HEADER_FILES})

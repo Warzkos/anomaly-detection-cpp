@@ -2,13 +2,15 @@
 
 #include "../search_algorithm.h"
 
+#include <numeric>
+
 template <typename T>
 class KDTree : public SearchAlgorithm {
     public:
         void fit(const std::vector<std::vector<int>>& data, std::shared_ptr<Distance> distance) override;
         void fit(const std::vector<std::vector<double>>& data, std::shared_ptr<Distance> distance) override;
-        void search_knearest(int k = 3, std::vector<std::pair<std::vector<int>, double>>& distanceToKNN) override;
-        void search_knearest(int k = 3, std::vector<std::pair<std::vector<double>, double>>& distanceToKNN) override;
+        void search_knearest(std::vector<std::pair<std::vector<int>, double>>& distanceToKNN, int k = 3) override;
+        void search_knearest(std::vector<std::pair<std::vector<double>, double>>& distanceToKNN, int k = 3) override;
 
     private:
         void fitAny(std::vector<std::vector<T>> data, std::shared_ptr<Distance> distance);
