@@ -29,7 +29,7 @@ lib/utils/distances/manhattan.h
 lib/utils/distance.h
 
 lib/utils/search_algorithm/bruteforce.h
-lib/utils/search_algorithm/kdtree.h
+# lib/utils/search_algorithm/kdtree.h
 lib/utils/search_algorithm.h
 )
 
@@ -44,7 +44,7 @@ src/utils/distances/chebyshev.cpp
 src/utils/distances/manhattan.cpp
 
 src/utils/search_algorithm/bruteforce.cpp
-src/utils/search_algorithm/kdtree.cpp
+# src/utils/search_algorithm/kdtree.cpp
 )
 
 add_executable(main src/main.cpp  ${SOURCE_FILES} ${HEADER_FILES})
@@ -52,7 +52,7 @@ add_executable(main src/main.cpp  ${SOURCE_FILES} ${HEADER_FILES})
 # BUILD_TESTING variable is created by include(CTest)
 # It is set to ON by default
 if(BUILD_TESTING)
-  set(TESTS tests/tests_main.cpp tests/distance_test.cpp tests/quartile_calc_test.cpp)
+  set(TESTS tests/tests_main.cpp tests/distance_test.cpp tests/quartile_calc_test.cpp tests/search_algorithm_test.cpp)
 
   add_executable(tests ${TESTS} ${SOURCE_FILES} ${HEADER_FILES})
   target_link_libraries(tests PRIVATE GTest::gtest_main)
