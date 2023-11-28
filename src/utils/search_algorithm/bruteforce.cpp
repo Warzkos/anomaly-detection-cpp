@@ -7,7 +7,8 @@ void BruteForce<T>::fit(const std::vector<std::vector<T>>& data, std::shared_ptr
 }
 
 template <typename T>
-void BruteForce<T>::search_knearest(std::vector<std::pair<std::vector<T>, double>>& distanceToKNN, int k){
+std::vector<std::pair<std::vector<T>, double>> BruteForce<T>::distance_to_knearest(int k){
+            std::vector<std::pair<std::vector<T>, double>> distanceToKNN = {};
             for(const auto& target : _data){
                 std::vector<std::pair<std::vector<T>, double>> k_nearest = {};
                 for(const auto& point : _data){
@@ -17,6 +18,7 @@ void BruteForce<T>::search_knearest(std::vector<std::pair<std::vector<T>, double
                 k_nearest.erase(k_nearest.begin() + k_nearest.size() - k + 1, k_nearest.end());
                 distanceToKNN.push_back(std::make_pair(target, std::accumulate(k_nearest.begin(), k_nearest.end(), 0.0, [](double sum, auto const &p) { return sum + p.second; })));
             }
+            return distanceToKNN;
         }
 
 template class BruteForce<int>;

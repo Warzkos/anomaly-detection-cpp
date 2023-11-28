@@ -53,8 +53,7 @@ public:
 TEST_F(SearchAlgorithmIntTest, BruteForceSearchKNearest) {
     auto searchAlgorithm = std::make_shared<BruteForce<int>>();
     searchAlgorithm->fit(data, distance);
-    std::vector<std::pair<std::vector<int>, double>> k_nearest;
-    searchAlgorithm->search_knearest(k_nearest, k);
+    std::vector<std::pair<std::vector<int>, double>> k_nearest = searchAlgorithm->distance_to_knearest(k);
 
     for (int i = 0; i < k_nearest.size(); i++) {
         EXPECT_EQ(k_nearest[i].first, k_nearest_ans[i].first);
