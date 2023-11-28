@@ -19,7 +19,7 @@ void lable_data(const std::vector<T> &data, std::vector<int> &labels,
 }
 
 template <typename T>
-void IQR::fitAny(std::vector<std::vector<T>> data,
+void IQR<T>::fit(std::vector<std::vector<T>> data,
                  std::vector<std::vector<int>> labels) {
     int num_features = data[0].size();
 
@@ -29,11 +29,11 @@ void IQR::fitAny(std::vector<std::vector<T>> data,
                             QuartileCalculator::calcQuartile(data, feature, QuartileCalculator::Quartile::THIRD)));
     }
 
-    lable_data(data, _labels, _quartiles);
+    lable_data(data, Algorithm<T>::_labels, _quartiles);
 }
 
 template <typename T>
-std::vector<int> IQR::predictAny(std::vector<std::vector<T>> data) {
+std::vector<int> IQR<T>::predict(std::vector<std::vector<T>> data) {
     if (std::any_of(data.begin(), data.end(), [this](auto const &sample) {
             return sample.size() != _quartiles.size();
         })) {
@@ -45,20 +45,5 @@ std::vector<int> IQR::predictAny(std::vector<std::vector<T>> data) {
     return labels;
 }
 
-void IQR::fit(std::vector<std::vector<double>> data,
-              std::vector<std::vector<int>> labels) {
-    IQR::fitAny(data, labels);
-}
-
-void IQR::fit(std::vector<std::vector<int>> data,
-              std::vector<std::vector<int>> labels) {
-    IQR::fitAny(data, labels);
-}
-
-std::vector<int> IQR::predict(std::vector<std::vector<double>> data) {
-    return IQR::predictAny(data);
-}
-
-std::vector<int> IQR::predict(std::vector<std::vector<int>> data) {
-    return IQR::predictAny(data);
-}
+template class IQR<int>;
+template class IQR<double>;
