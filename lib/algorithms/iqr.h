@@ -6,26 +6,14 @@
 #include <stdexcept>
 #include <algorithm>
 
-class IQR : public Algorithm {
-    private:
-        std::vector<std::tuple<double, double>> _quartiles = {};
-
-        template <typename T>
-        void fitAny(std::vector<std::vector<T>> data,
-                    std::vector<std::vector<int>> labels = {});
-
-        template <typename T>
-        std::vector<int> predictAny(std::vector<std::vector<T>> data);
-
+template <typename T>
+class IQR : public Algorithm<T> {
     public:
-
-        void fit(std::vector<std::vector<double>> data,
-                 std::vector<std::vector<int>> labels = {}) override;
-
-        void fit(std::vector<std::vector<int>> data,
+        void fit(std::vector<std::vector<T>> data,
                  std::vector<std::vector<int>> labels = {}) override;
     
-        std::vector<int> predict(std::vector<std::vector<double>> data) override;
-
-        std::vector<int> predict(std::vector<std::vector<int>> data) override;
+        std::vector<int> predict(std::vector<std::vector<T>> data) override;
+    
+    private:
+        std::vector<std::tuple<double, double>> _quartiles = {};
 };
