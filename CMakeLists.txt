@@ -29,7 +29,7 @@ lib/utils/distances/manhattan.h
 lib/utils/distance.h
 
 lib/utils/search_algorithm/bruteforce.h
-# lib/utils/search_algorithm/kdtree.h
+lib/utils/search_algorithm/kdtree.h
 lib/utils/search_algorithm.h
 )
 
@@ -44,7 +44,7 @@ src/utils/distances/chebyshev.cpp
 src/utils/distances/manhattan.cpp
 
 src/utils/search_algorithm/bruteforce.cpp
-# src/utils/search_algorithm/kdtree.cpp
+src/utils/search_algorithm/kdtree.cpp
 )
 
 add_executable(main src/main.cpp  ${SOURCE_FILES} ${HEADER_FILES})

@@ -1,45 +1,30 @@
 #include "../../../lib/utils/search_algorithm/kdtree.h"
 
 template <typename T>
-void KDTree<T>::fit(const std::vector<std::vector<int>>& data, std::shared_ptr<Distance> distance){
-    fitAny(data, distance);
-}
-
-template <typename T>
-void KDTree<T>::fit(const std::vector<std::vector<double>>& data, std::shared_ptr<Distance> distance){
-    fitAny(data, distance);
-}
-template <typename T>
-void KDTree<T>::search_knearest(std::vector<std::pair<std::vector<int>, double>>& distanceToKNN, int k){
-    search_knearestAny(k, distanceToKNN);
-}
-template <typename T>
-void KDTree<T>::search_knearest(std::vector<std::pair<std::vector<double>, double>>& distanceToKNN, int k){
-    search_knearestAny(k, distanceToKNN);
-}
-
-template <typename T>
-void KDTree<T>::fitAny(std::vector<std::vector<T>> data, std::shared_ptr<Distance> distance){
+void KDTree<T>::fit(const std::vector<std::vector<T>>& data, std::shared_ptr<Distance> distance){
     _data = data;
+    auto data_copy = data;
     _root = std::make_shared<Node>();
-    std::nth_element(data.begin(), data.begin() + data.size() / 2, data.end(), [](auto const &p1, auto const &p2) { return p1[0] < p2[0]; });
-    _root -> point = data[data.size() / 2];
+    std::nth_element(data_copy.begin(), data_copy.begin() + data_copy.size() / 2, data_copy.end(), [](auto const &p1, auto const &p2) { return p1[0] < p2[0]; });
+    _root -> point = data_copy[data_copy.size() / 2];
     _root -> depth = 0;
-    data.erase(data.begin() + data.size() / 2);
+    data_copy.erase(data_copy.begin() + data_copy.size() / 2);
 
-    _distance = std::move(distance);
-    _num_features = data[0].size();
+    _distance = distance;
+    _num_features = data_copy[0].size();
 
-    buildKDTree(data);
+    buildKDTree(data_copy);
 }
 
 template <typename T>
-void KDTree<T>::search_knearestAny(int k, std::vector<std::pair<std::vector<T>, double>>& distanceToKNN){
+std::vector<std::pair<std::vector<T>, double>> KDTree<T>::distance_to_knearest(int k) {
+    std::vector<std::pair<std::vector<T>, double>> distanceToKNN = {};
     for(const auto& target : _data){
-            std::vector<std::pair<std::vector<int>, double>> k_nearest = {};
-            knnSearchRecursive(_root, target, k_nearest, k);
-            distanceToKNN.push_back(std::make_pair(target, std::accumulate(k_nearest.begin(), k_nearest.end(), 0.0, [](double sum, auto const &p) { return sum + p.second; })));
-        }
+        std::vector<std::pair<std::vector<T>, double>> k_nearest = {};
+        searchRecursive(_root, target, k_nearest, k);
+        distanceToKNN.push_back(std::make_pair(target, std::accumulate(k_nearest.begin(), k_nearest.end(), 0.0, [](double sum, auto const &p) { return sum + p.second; })));
+    }
+    return distanceToKNN;
 }
 
 template <typename T>
@@ -109,3 +94,6 @@ void KDTree<T>::searchRecursive(std::shared_ptr<Node> current, const std::vector
         }
     }
 }
+
+template class KDTree<int>;
+template class KDTree<double>;

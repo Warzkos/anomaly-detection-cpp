@@ -4,7 +4,7 @@
 
 #include "../lib/utils/search_algorithm.h"
 #include "../lib/utils/search_algorithm/bruteforce.h"
-// #include "../lib/utils/search_algorithm/kdtree.h"
+#include "../lib/utils/search_algorithm/kdtree.h"
 
 #include "../lib/utils/distance.h"
 #include "../lib/utils/distances/euclidean.h"
@@ -39,12 +39,16 @@ protected:
         distance = std::make_shared<Euclidean>();
 
         k=3;
+
+        searchAlgorithms.push_back(std::make_shared<BruteForce<double>>());
+        searchAlgorithms.push_back(std::make_shared<KDTree<double>>());
     }
 public:
     std::shared_ptr<Distance> distance;
     std::vector<std::vector<double>> data;
     std::vector<std::pair<std::vector<double>, double>> k_nearest_ans;
     int k;
+    std::vector<std::shared_ptr<SearchAlgorithm<double>>> searchAlgorithms;
 };
 
 class SearchAlgorithmIntTest : public ::testing::Test {
@@ -71,32 +75,38 @@ protected:
         distance = std::make_shared<Euclidean>();
 
         k=3;
+
+        searchAlgorithms.push_back(std::make_shared<BruteForce<int>>());
+        searchAlgorithms.push_back(std::make_shared<KDTree<int>>());
     }
 public:
     std::shared_ptr<Distance> distance;
     std::vector<std::vector<int>> data;
     std::vector<std::pair<std::vector<int>, double>> k_nearest_ans;
     int k;
+    std::vector<std::shared_ptr<SearchAlgorithm<int>>> searchAlgorithms;
 };
 
 TEST_F(SearchAlgorithmIntTest, IntBruteForceSearchKNearest) {
-    auto searchAlgorithm = std::make_shared<BruteForce<int>>();
-    searchAlgorithm->fit(data, distance);
-    std::vector<std::pair<std::vector<int>, double>> k_nearest = searchAlgorithm->distance_to_knearest(k);
+    for(auto searchAlgorithm : searchAlgorithms){
+        searchAlgorithm->fit(data, distance);
+        std::vector<std::pair<std::vector<int>, double>> k_nearest = searchAlgorithm->distance_to_knearest(k);
 
-    for (int i = 0; i < k_nearest.size(); i++) {
-        EXPECT_EQ(k_nearest[i].first, k_nearest_ans[i].first);
-        EXPECT_NEAR(k_nearest[i].second, k_nearest_ans[i].second, 0.01);
+        for (int i = 0; i < k_nearest.size(); i++) {
+            EXPECT_EQ(k_nearest[i].first, k_nearest_ans[i].first);
+            EXPECT_NEAR(k_nearest[i].second, k_nearest_ans[i].second, 0.01);
+        }
     }
 }
 
 TEST_F(SearchAlgorithmDoubleTest, DoubleBruteForceSearchKNearest) {
-    auto searchAlgorithm = std::make_shared<BruteForce<double>>();
-    searchAlgorithm->fit(data, distance);
-    std::vector<std::pair<std::vector<double>, double>> k_nearest = searchAlgorithm->distance_to_knearest(k);
+    for(auto searchAlgorithm : searchAlgorithms){
+        searchAlgorithm->fit(data, distance);
+        std::vector<std::pair<std::vector<double>, double>> k_nearest = searchAlgorithm->distance_to_knearest(k);
 
-    for (int i = 0; i < k_nearest.size(); i++) {
-        EXPECT_EQ(k_nearest[i].first, k_nearest_ans[i].first);
-        EXPECT_NEAR(k_nearest[i].second, k_nearest_ans[i].second, 0.01);
+        for (int i = 0; i < k_nearest.size(); i++) {
+            EXPECT_EQ(k_nearest[i].first, k_nearest_ans[i].first);
+            EXPECT_NEAR(k_nearest[i].second, k_nearest_ans[i].second, 0.01);
+        }
     }
 }

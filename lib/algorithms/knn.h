@@ -30,5 +30,3 @@ class KNN : public Algorithm {
         template <typename T>
         std::vector<int> predictAny(std::vector<std::vector<T>> data);
 };
-
-// TODO: Implement neighbour search algorithms like KD-Tree, Ball-Tree, etc.
